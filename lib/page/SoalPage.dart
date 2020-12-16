@@ -21,10 +21,6 @@ class _SoalPageState extends State<SoalPage> {
   _SoalPageState(this.jenisSoal, this.jumlahSoal);
 
   bool isRight = false;
-  bool cekA = false;
-  bool cekB = false;
-  bool cekC = false;
-  bool cekD = false;
   var tempAnswer = '';
   var trueAnswer = '';
   var fz = 16.0;
