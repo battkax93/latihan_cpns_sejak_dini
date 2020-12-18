@@ -21,7 +21,7 @@ class _SoalPageState extends State<SoalPage> {
   _SoalPageState(this.jenisSoal, this.jumlahSoal);
 
   bool isRight = false;
-  bool hasTimer = false;
+  bool hasTimer = true;
   var tempAnswer = '';
   var trueAnswer = '';
   var secondRemaining = 0;
@@ -43,7 +43,6 @@ class _SoalPageState extends State<SoalPage> {
 
   void cekSoal(){
       setState(() {
-        hasTimer = true;
         if(jenisSoal=='TIU'){
           secondRemaining = 30;
         } else {
@@ -69,6 +68,7 @@ class _SoalPageState extends State<SoalPage> {
     bloc.soal.add(vModel.id);
     setState(() {
       print('cek tempAnswer ${vModel.jawabanBenar} : $tempAnswer');
+      hasTimer = false;
       trueAnswer = vModel.jawabanBenar;
       if (vModel.jawabanBenar == tempAnswer) {
         isRight = true;
@@ -144,8 +144,8 @@ class _SoalPageState extends State<SoalPage> {
               ],
             ),
             SizedBox(width: 150),
-            Icon(Icons.timer,color: Colors.blue),
-            boxTimer()
+            hasTimer ? Icon(Icons.timer,color: Colors.blue) : Container(),
+            hasTimer ? boxTimer() : Container()
           ],
         ),
       );
@@ -420,13 +420,13 @@ class _SoalPageState extends State<SoalPage> {
                     margin: EdgeInsets.all(10),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.blue[700],
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       'cek jawaban',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: fz2,
+                          color: Colors.white,
+                          fontSize: 22,
                           fontWeight: FontWeight.w700),
                     ),
                   ),
@@ -437,7 +437,7 @@ class _SoalPageState extends State<SoalPage> {
           InkWell(
             onTap: () {
                 isRight = false;
-                hasTimer = false;
+                hasTimer = true;
                 tempAnswer = '';
                 trueAnswer = '';
                 getSoal();
@@ -450,13 +450,13 @@ class _SoalPageState extends State<SoalPage> {
                     margin: EdgeInsets.all(10),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.blue[700],
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       'Selanjutnya',
                       style: TextStyle(
-                          color: Colors.black,
-                          fontSize: fz2,
+                          color: Colors.white,
+                          fontSize: 22,
                           fontWeight: FontWeight.w700),
                     ),
                   ),
