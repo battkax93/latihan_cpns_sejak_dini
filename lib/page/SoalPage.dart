@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latihan_cpns_sejak_dini/blocs/soal_bloc.dart';
 import 'package:latihan_cpns_sejak_dini/models/soal_model.dart';
+import '../common/countdownTimer.dart';
 
 class SoalPage extends StatefulWidget {
   final String jenisSoal;
@@ -20,10 +21,12 @@ class _SoalPageState extends State<SoalPage> {
   _SoalPageState(this.jenisSoal, this.jumlahSoal);
 
   bool isRight = false;
+  bool hasTimer = false;
   var tempAnswer = '';
   var trueAnswer = '';
+  var secondRemaining = 0;
   var fz = 16.0;
-  var fz2 = 25.0;
+  var fz2 = 16.0;
   var tempScore = 0;
   var tempSalah = 0;
   var tmpQ = 0;
@@ -34,8 +37,19 @@ class _SoalPageState extends State<SoalPage> {
   @override
   void initState() {
     super.initState();
-    print(jenisSoal);
+    cekSoal();
     getSoal();
+  }
+
+  void cekSoal(){
+      setState(() {
+        hasTimer = true;
+        if(jenisSoal=='TIU'){
+          secondRemaining = 30;
+        } else {
+          secondRemaining = 10;
+        }
+      });
   }
 
   void getSoal() {
@@ -102,31 +116,41 @@ class _SoalPageState extends State<SoalPage> {
     );
   }
 
-  boxScore() => Container(
+  boxScore() =>
+      Container(
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
             color: Colors.black, borderRadius: BorderRadius.circular(10)),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              'Score: $tempScore',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: fz2),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Score: $tempScore',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: fz2),
+                ),
+                Text(
+                  'Salah: $tempSalah',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w700,
+                      fontSize: fz2),
+                ),
+              ],
             ),
-            Text(
-              'Salah: $tempSalah',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                  fontSize: fz2),
-            ),
+            SizedBox(width: 150),
+            Icon(Icons.timer,color: Colors.blue),
+            boxTimer()
           ],
         ),
       );
+
+
 
   boxSoal() => Center(
         child: Wrap(
@@ -381,6 +405,7 @@ class _SoalPageState extends State<SoalPage> {
       );
 
   boxNext() => Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           InkWell(
             onTap: () {
@@ -395,7 +420,7 @@ class _SoalPageState extends State<SoalPage> {
                     margin: EdgeInsets.all(10),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       'cek jawaban',
@@ -411,10 +436,12 @@ class _SoalPageState extends State<SoalPage> {
           ),
           InkWell(
             onTap: () {
-              isRight = false;
-              tempAnswer = '';
-              trueAnswer = '';
-              getSoal();
+                isRight = false;
+                hasTimer = false;
+                tempAnswer = '';
+                trueAnswer = '';
+                getSoal();
+                cekSoal();
             },
             child: Center(
               child: Wrap(
@@ -423,7 +450,7 @@ class _SoalPageState extends State<SoalPage> {
                     margin: EdgeInsets.all(10),
                     padding: EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                        color: Colors.green,
+                        color: Colors.blue,
                         borderRadius: BorderRadius.circular(10)),
                     child: Text(
                       'Selanjutnya',
@@ -440,6 +467,25 @@ class _SoalPageState extends State<SoalPage> {
         ],
       );
 
+  boxTimer() =>  Center(
+    child: Container(
+      padding: EdgeInsets.only(top: 3.0, right: 4.0, left: 4.0),
+      child: CountDownTimer(
+        secondsRemaining: secondRemaining,
+        whenTimeExpires: () {
+          setState(() {
+            checkAnswer();
+          });
+        },
+        countDownTimerStyle: TextStyle(
+            color:Colors.white,
+            fontSize: 27,
+            fontWeight: FontWeight.bold,
+            height: 1.2),
+      ),
+    ),
+  );
+
   bodyApp(SoalModel soalModel) => SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -448,33 +494,6 @@ class _SoalPageState extends State<SoalPage> {
             boxSoal(),
             boxAnswer(),
             boxNext(),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  tmpQ = 0;
-                });
-              },
-              child: Center(
-                child: Wrap(
-                  children: [
-                    Container(
-                      margin: EdgeInsets.all(10),
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                          color: Colors.green,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: Text(
-                        'hapus box soal (${tmpQ + 1})',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: fz2,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       );
