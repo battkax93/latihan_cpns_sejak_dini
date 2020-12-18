@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:math';
 import 'package:latihan_cpns_sejak_dini/blocs/soal_bloc.dart';
 import 'package:latihan_cpns_sejak_dini/models/soal_model.dart';
 
@@ -48,7 +47,6 @@ class _SoalPageState extends State<SoalPage> {
 
   void lockAnswer(String answer) {
     setState(() {
-      print('cek $answer');
       tempAnswer = answer;
     });
   }
@@ -488,7 +486,7 @@ class _SoalPageState extends State<SoalPage> {
       home: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage('images/cat.jpg'), fit: BoxFit.cover)),
+                image: NetworkImage('http://192.168.100.22/latihan_cpns/asset/background.jpg'), fit: BoxFit.cover)),
         child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
