@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:audioplayers/audio_cache.dart';
+
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({
     Key key,
@@ -21,6 +24,8 @@ class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   AnimationController _controller;
   Duration duration;
+  final player = AudioCache();
+  // AudioCache _audioCache;
 
   String get timerDisplayString {
     Duration duration = _controller.duration * _controller.value;
@@ -34,6 +39,7 @@ class _CountDownTimerState extends State<CountDownTimer>
   @override
   void initState() {
     super.initState();
+    // _audioCache = AudioCache(prefix: "audios/", fixedPlayer: AudioPlayer()..setReleaseMode(ReleaseMode.STOP));
     duration = new Duration(seconds: widget.secondsRemaining);
     _controller = new AnimationController(
       vsync: this,
@@ -43,6 +49,7 @@ class _CountDownTimerState extends State<CountDownTimer>
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed || status == AnimationStatus.dismissed) {
         widget.whenTimeExpires();
+        player.play('notification.wav');
       }
     });
   }

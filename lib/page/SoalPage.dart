@@ -22,6 +22,7 @@ class _SoalPageState extends State<SoalPage> {
 
   bool isRight = false;
   bool hasTimer = true;
+  var tempStatus = '';
   var tempAnswer = '';
   var trueAnswer = '';
   var secondRemaining = 0;
@@ -44,7 +45,7 @@ class _SoalPageState extends State<SoalPage> {
   void cekSoal(){
       setState(() {
         if(jenisSoal=='TIU'){
-          secondRemaining = 30;
+          secondRemaining = 120;
         } else {
           secondRemaining = 10;
         }
@@ -79,21 +80,38 @@ class _SoalPageState extends State<SoalPage> {
       }
     });
 
-    _scaffoldKey.currentState.showSnackBar(new SnackBar(
-      content: isRight
-          ? new Text("Anda Benar",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: fz2,
-                  fontWeight: FontWeight.w700))
-          : new Text("Anda Salah | Jawaban: ${vModel.jawabanBenar}",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: fz2,
-                  fontWeight: FontWeight.w700)),
-      backgroundColor: isRight ? Colors.blue[700] : Colors.red,
-      duration: const Duration(milliseconds: 800),
-    ));
+    if(tempStatus=='Waktu Anda Habis') {
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content:
+           new Text("$tempStatus",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: fz2,
+                fontWeight: FontWeight.w700)),
+        backgroundColor: isRight ? Colors.blue[700] : Colors.red,
+        duration: const Duration(milliseconds: 1500),
+      ));
+      setState(() {
+        tempStatus = '';
+      });
+    } else {
+      _scaffoldKey.currentState.showSnackBar(new SnackBar(
+        content: isRight
+            ? new Text("Anda Benar",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: fz2,
+                fontWeight: FontWeight.w700))
+            : new Text("Anda Salah | Jawaban: ${vModel.jawabanBenar}",
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: fz2,
+                fontWeight: FontWeight.w700)),
+        backgroundColor: isRight ? Colors.blue[700] : Colors.red,
+        duration: const Duration(milliseconds: 1500),
+      ));
+    }
+
   }
 
   streamBuilder(val) {
@@ -434,14 +452,15 @@ class _SoalPageState extends State<SoalPage> {
               ),
             ),
           ),
-          InkWell(
+          !hasTimer ? InkWell(
             onTap: () {
-                isRight = false;
-                hasTimer = true;
-                tempAnswer = '';
-                trueAnswer = '';
-                getSoal();
-                cekSoal();
+                  isRight = false;
+                  hasTimer = true;
+                  tempAnswer = '';
+                  trueAnswer = '';
+                  getSoal();
+                  cekSoal();
+
             },
             child: Center(
               child: Wrap(
@@ -463,6 +482,25 @@ class _SoalPageState extends State<SoalPage> {
                 ],
               ),
             ),
+          ) : Center(
+            child: Wrap(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    'Selanjutnya',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       );
@@ -474,6 +512,7 @@ class _SoalPageState extends State<SoalPage> {
         secondsRemaining: secondRemaining,
         whenTimeExpires: () {
           setState(() {
+            tempStatus = 'Waktu Anda Habis';
             checkAnswer();
           });
         },
