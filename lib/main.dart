@@ -150,7 +150,7 @@ class _latCpnsState extends State<latCpns> {
                                 Colors.black.withOpacity(0.05),
                                 BlendMode.darken),
                             image: NetworkImage(
-                                'http://192.168.100.22/latihan_cpns/asset/twk-button-bg.jpg'),
+                                'http://192.168.100.22/latihan_cpns/asset/tkp-button-bg.jpg'),
                             fit: BoxFit.cover),
                     ),
                     child: Center(
@@ -177,7 +177,7 @@ class _latCpnsState extends State<latCpns> {
                                 fontWeight: FontWeight.bold),
                           ),
                           Text(
-                            '(Tes Wawasan Kebangsaan)',
+                            '(Tes karakteristik Pribadi)',
                             style: TextStyle(
                                 shadows: <Shadow>[
                                   Shadow(
@@ -227,7 +227,7 @@ class _latCpnsState extends State<latCpns> {
                                 Colors.black.withOpacity(0.02),
                                 BlendMode.darken),
                             image: NetworkImage(
-                                'http://192.168.100.22/latihan_cpns/asset/tkp-button-bg.jpg'),
+                                'http://192.168.100.22/latihan_cpns/asset/twk-button-bg.jpg'),
                             fit: BoxFit.cover)),
                     child: Center(
                       child: Column(

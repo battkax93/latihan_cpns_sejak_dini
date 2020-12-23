@@ -134,8 +134,7 @@ class _SoalPageState extends State<SoalPage> {
     );
   }
 
-  boxScore() =>
-      Container(
+  boxScore() => Container(
         padding: EdgeInsets.all(10),
         margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -167,8 +166,6 @@ class _SoalPageState extends State<SoalPage> {
           ],
         ),
       );
-
-
 
   boxSoal() => Center(
         child: Wrap(
@@ -425,7 +422,7 @@ class _SoalPageState extends State<SoalPage> {
   boxNext() => Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          InkWell(
+          hasTimer ? InkWell(
             onTap: () {
               setState(() {
                 checkAnswer();
@@ -450,6 +447,25 @@ class _SoalPageState extends State<SoalPage> {
                   ),
                 ],
               ),
+            )
+          ) : Center(
+            child: Wrap(
+              children: [
+                Container(
+                  margin: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.grey[400],
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    'cek jawaban',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ],
             ),
           ),
           !hasTimer ? InkWell(
