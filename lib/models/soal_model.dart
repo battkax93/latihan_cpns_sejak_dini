@@ -1,28 +1,33 @@
-// To parse this JSON data, do
-//
-//     final welcome = welcomeFromJson(jsonString);
-
-import 'dart:convert';
-
-SoalModel SoalFromJson(String str) => SoalModel.fromJson(json.decode(str));
-
-String SoalToJson(SoalModel data) => json.encode(data.toJson());
-
 class SoalModel {
-  SoalModel({
-    this.id,
-    this.jenis,
-    this.soal,
-    this.a,
-    this.b,
-    this.c,
-    this.d,
-    this.jawabanBenar,
-    this.image,
-    this.benar,
-    this.salah,
-  });
+  int code;
+  String message;
+  List<Data> data;
 
+  SoalModel({this.code, this.message, this.data});
+
+  SoalModel.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    message = json['message'];
+    if (json['data'] != null) {
+      data = new List<Data>();
+      json['data'].forEach((v) {
+        data.add(new Data.fromJson(v));
+      });
+    }
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['code'] = this.code;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class Data {
   String id;
   String jenis;
   String soal;
@@ -31,35 +36,54 @@ class SoalModel {
   String c;
   String d;
   String jawabanBenar;
+  String isConfirmed;
   String image;
   String benar;
   String salah;
 
-  factory SoalModel.fromJson(Map<String, dynamic> json) => SoalModel(
-    id: json["id"],
-    jenis: json["jenis"],
-    soal: json["soal"],
-    a: json["a"],
-    b: json["b"],
-    c: json["c"],
-    d: json["d"],
-    jawabanBenar: json["jawaban_benar"],
-    image: json["image"],
-    benar: json["benar"],
-    salah: json["salah"],
-  );
+  Data(
+      {this.id,
+        this.jenis,
+        this.soal,
+        this.a,
+        this.b,
+        this.c,
+        this.d,
+        this.jawabanBenar,
+        this.isConfirmed,
+        this.image,
+        this.benar,
+        this.salah});
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "jenis": jenis,
-    "soal": soal,
-    "a": a,
-    "b": b,
-    "c": c,
-    "d": d,
-    "jawaban_benar": jawabanBenar,
-    "image": image,
-    "benar": benar,
-    "salah": salah,
-  };
+  Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    jenis = json['jenis'];
+    soal = json['soal'];
+    a = json['a'];
+    b = json['b'];
+    c = json['c'];
+    d = json['d'];
+    jawabanBenar = json['jawaban_benar'];
+    isConfirmed = json['is_confirmed'];
+    image = json['image'];
+    benar = json['benar'];
+    salah = json['salah'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['jenis'] = this.jenis;
+    data['soal'] = this.soal;
+    data['a'] = this.a;
+    data['b'] = this.b;
+    data['c'] = this.c;
+    data['d'] = this.d;
+    data['jawaban_benar'] = this.jawabanBenar;
+    data['is_confirmed'] = this.isConfirmed;
+    data['image'] = this.image;
+    data['benar'] = this.benar;
+    data['salah'] = this.salah;
+    return data;
+  }
 }

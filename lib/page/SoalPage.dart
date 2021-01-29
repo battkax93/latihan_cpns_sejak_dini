@@ -42,20 +42,20 @@ class _SoalPageState extends State<SoalPage> {
     getSoal();
   }
 
-  void cekSoal(){
-      setState(() {
-        if(jenisSoal=='TIU'){
-          secondRemaining = 120;
-        } else {
-          secondRemaining = 10;
-        }
-      });
+  void cekSoal() {
+    setState(() {
+      if (jenisSoal == 'TIU') {
+        secondRemaining = 120;
+      } else {
+        secondRemaining = 20;
+      }
+    });
   }
 
   void getSoal() {
-    tmpQ = bloc.randomArr(jumlahSoal);
-    if (tmpQ == 0) tmpQ++;
-    bloc.fetchSoal('$tmpQ', jenisSoal);
+    jumlahSoal==1? tmpQ = 0 : tmpQ = bloc.randomArr(jumlahSoal);
+    // if (tmpQ >= jumlahSoal) tmpQ = jumlahSoal-1;
+    bloc.fetchSoal(jenisSoal);
     vModel = bloc.tempSoalModel;
   }
 
@@ -66,12 +66,12 @@ class _SoalPageState extends State<SoalPage> {
   }
 
   void checkAnswer() {
-    bloc.soal.add(vModel.id);
+    bloc.soal.add(vModel.data[tmpQ].id);
     setState(() {
-      print('cek tempAnswer ${vModel.jawabanBenar} : $tempAnswer');
+      print('cek tempAnswer ${vModel.data[tmpQ].jawabanBenar} : $tempAnswer');
       hasTimer = false;
-      trueAnswer = vModel.jawabanBenar;
-      if (vModel.jawabanBenar == tempAnswer) {
+      trueAnswer = vModel.data[tmpQ].jawabanBenar;
+      if (vModel.data[tmpQ].jawabanBenar == tempAnswer) {
         isRight = true;
         tempScore++;
       } else {
@@ -80,10 +80,9 @@ class _SoalPageState extends State<SoalPage> {
       }
     });
 
-    if(tempStatus=='Waktu Anda Habis') {
+    if (tempAnswer == '') {
       _scaffoldKey.currentState.showSnackBar(new SnackBar(
-        content:
-           new Text("$tempStatus",
+        content: Text("Jawaban ${vModel.data[tmpQ].jawabanBenar}",
             style: TextStyle(
                 color: Colors.white,
                 fontSize: fz2,
@@ -91,27 +90,38 @@ class _SoalPageState extends State<SoalPage> {
         backgroundColor: isRight ? Colors.blue[700] : Colors.red,
         duration: const Duration(milliseconds: 1500),
       ));
-      setState(() {
-        tempStatus = '';
-      });
     } else {
-      _scaffoldKey.currentState.showSnackBar(new SnackBar(
-        content: isRight
-            ? new Text("Anda Benar",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: fz2,
-                fontWeight: FontWeight.w700))
-            : new Text("Anda Salah | Jawaban: ${vModel.jawabanBenar}",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: fz2,
-                fontWeight: FontWeight.w700)),
-        backgroundColor: isRight ? Colors.blue[700] : Colors.red,
-        duration: const Duration(milliseconds: 1500),
-      ));
+      if (tempStatus == 'Waktu Anda Habis') {
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          content: new Text("$tempStatus",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: fz2,
+                  fontWeight: FontWeight.w700)),
+          backgroundColor: isRight ? Colors.blue[700] : Colors.red,
+          duration: const Duration(milliseconds: 1500),
+        ));
+        setState(() {
+          tempStatus = '';
+        });
+      } else {
+        _scaffoldKey.currentState.showSnackBar(new SnackBar(
+          content: isRight
+              ? new Text("Anda Benar",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fz2,
+                      fontWeight: FontWeight.w700))
+              : new Text("Anda Salah | Jawaban: ${vModel.data[tmpQ].jawabanBenar}",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: fz2,
+                      fontWeight: FontWeight.w700)),
+          backgroundColor: isRight ? Colors.blue[700] : Colors.red,
+          duration: const Duration(milliseconds: 1500),
+        ));
+      }
     }
-
   }
 
   streamBuilder(val) {
@@ -161,7 +171,7 @@ class _SoalPageState extends State<SoalPage> {
               ],
             ),
             SizedBox(width: 150),
-            hasTimer ? Icon(Icons.timer,color: Colors.blue) : Container(),
+            hasTimer ? Icon(Icons.timer, color: Colors.blue) : Container(),
             hasTimer ? boxTimer() : Container()
           ],
         ),
@@ -178,7 +188,7 @@ class _SoalPageState extends State<SoalPage> {
                   color: Colors.blue[100],
                   borderRadius: BorderRadius.circular(10)),
               child: Text(
-                '${vModel.soal}',
+                '${vModel.data[tmpQ].soal}',
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: fz,
@@ -212,7 +222,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.a,
+                          child: Text(vModel.data[tmpQ].a,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -240,7 +250,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.a,
+                          child: Text(vModel.data[tmpQ].a,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -268,7 +278,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.b,
+                          child: Text(vModel.data[tmpQ].b,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -296,7 +306,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.b,
+                          child: Text(vModel.data[tmpQ].b,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -324,7 +334,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.c,
+                          child: Text(vModel.data[tmpQ].c,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -352,7 +362,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.c,
+                          child: Text(vModel.data[tmpQ].c,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -380,7 +390,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.d,
+                          child: Text(vModel.data[tmpQ].c,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -408,7 +418,7 @@ class _SoalPageState extends State<SoalPage> {
                             style:
                                 TextStyle(color: Colors.black, fontSize: fz)),
                         Expanded(
-                          child: Text(vModel.d,
+                          child: Text(vModel.data[tmpQ].d,
                               style:
                                   TextStyle(color: Colors.black, fontSize: fz)),
                         ),
@@ -420,126 +430,128 @@ class _SoalPageState extends State<SoalPage> {
       );
 
   boxNext() => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          hasTimer ? InkWell(
-            onTap: () {
-              setState(() {
-                checkAnswer();
-              });
-            },
-            child: Center(
-              child: Wrap(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.blue[700],
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      'cek jawaban',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700),
+          hasTimer
+              ? InkWell(
+                  onTap: () {
+                    setState(() {
+                      checkAnswer();
+                    });
+                  },
+                  child: Center(
+                    child: Wrap(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.blue[700],
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            'cek jawaban',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            )
-          ) : Center(
-            child: Wrap(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[400],
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    'cek jawaban',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700),
+                  ))
+              : Center(
+                  child: Wrap(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[400],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          'cek jawaban',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-          !hasTimer ? InkWell(
-            onTap: () {
-                  isRight = false;
-                  hasTimer = true;
-                  tempAnswer = '';
-                  trueAnswer = '';
-                  getSoal();
-                  cekSoal();
-
-            },
-            child: Center(
-              child: Wrap(
-                children: [
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Colors.blue[700],
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Text(
-                      'Selanjutnya',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 22,
-                          fontWeight: FontWeight.w700),
+          !hasTimer
+              ? InkWell(
+                  onTap: () {
+                    isRight = false;
+                    hasTimer = true;
+                    tempAnswer = '';
+                    trueAnswer = '';
+                    getSoal();
+                    cekSoal();
+                  },
+                  child: Center(
+                    child: Wrap(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(10),
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Colors.blue[700],
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Text(
+                            'Selanjutnya',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
-            ),
-          ) : Center(
-            child: Wrap(
-              children: [
-                Container(
-                  margin: EdgeInsets.all(10),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[400],
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Text(
-                    'Selanjutnya',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w700),
+                )
+              : Center(
+                  child: Wrap(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            color: Colors.grey[400],
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Text(
+                          'Selanjutnya',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          )
+                )
         ],
       );
 
-  boxTimer() =>  Center(
-    child: Container(
-      padding: EdgeInsets.only(top: 3.0, right: 4.0, left: 4.0),
-      child: CountDownTimer(
-        secondsRemaining: secondRemaining,
-        whenTimeExpires: () {
-          setState(() {
-            tempStatus = 'Waktu Anda Habis';
-            checkAnswer();
-          });
-        },
-        countDownTimerStyle: TextStyle(
-            color:Colors.white,
-            fontSize: 27,
-            fontWeight: FontWeight.bold,
-            height: 1.2),
-      ),
-    ),
-  );
+  boxTimer() => Center(
+        child: Container(
+          padding: EdgeInsets.only(top: 3.0, right: 4.0, left: 4.0),
+          child: CountDownTimer(
+            secondsRemaining: secondRemaining,
+            whenTimeExpires: () {
+              setState(() {
+                tempStatus = 'Waktu Anda Habis';
+                checkAnswer();
+              });
+            },
+            countDownTimerStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 27,
+                fontWeight: FontWeight.bold,
+                height: 1.2),
+          ),
+        ),
+      );
 
   bodyApp(SoalModel soalModel) => SingleChildScrollView(
         child: Column(
@@ -560,7 +572,9 @@ class _SoalPageState extends State<SoalPage> {
       home: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: NetworkImage('http://192.168.100.22/latihan_cpns/asset/background.jpg'), fit: BoxFit.cover)),
+                image: NetworkImage(
+                    'http://192.168.100.22/latihan_cpns/asset/background.jpg'),
+                fit: BoxFit.cover)),
         child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(

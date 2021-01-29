@@ -20,8 +20,8 @@ class SoalBloc {
   Observable<SoalModel> get oneSoal => _soalFetcher.stream;
   Observable<CountSoal> get hitungSoal => _soalCounter.stream;
 
-  fetchSoal(String id, String jenisSoal) async {
-    SoalModel soalModel = await _repository.fetchSoal(id, jenisSoal);
+  fetchSoal(String jenisSoal) async {
+    SoalModel soalModel = await _repository.fetchSoal(jenisSoal);
     _soalFetcher.sink.add(soalModel);
     tempSoalModel = soalModel;
   }
@@ -37,7 +37,10 @@ class SoalBloc {
 
   int randomArr(int soalLength){
     var rng = new Random();
-    return rng.nextInt(soalLength);
+    var _val = rng.nextInt(soalLength);
+    print('cek random $_val');
+    print('jumlah soal $soalLength');
+    return _val;
   }
 
   dispose(){
