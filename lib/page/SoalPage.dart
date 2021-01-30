@@ -54,7 +54,6 @@ class _SoalPageState extends State<SoalPage> {
 
   void getSoal() {
     jumlahSoal==1? tmpQ = 0 : tmpQ = bloc.randomArr(jumlahSoal);
-    // if (tmpQ >= jumlahSoal) tmpQ = jumlahSoal-1;
     bloc.fetchSoal(jenisSoal);
     vModel = bloc.tempSoalModel;
   }
@@ -131,7 +130,7 @@ class _SoalPageState extends State<SoalPage> {
       builder: (context, snapshot) {
         vModel = snapshot.data;
         if (snapshot.hasData) {
-          return bodyApp(snapshot.data);
+          return bodyApp();
         } else {
           return Center(
               child: SizedBox(
@@ -429,24 +428,77 @@ class _SoalPageState extends State<SoalPage> {
         ],
       );
 
-  boxNext() => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          hasTimer
-              ? InkWell(
-                  onTap: () {
-                    setState(() {
-                      checkAnswer();
-                    });
-                  },
-                  child: Center(
+  imageAnswer() => Container(
+    height: 500,
+    width: double.infinity,
+    padding: EdgeInsets.all(10),
+    margin: EdgeInsets.all(10),
+    decoration: BoxDecoration(
+        color: Colors.black, borderRadius: BorderRadius.circular(10), image: DecorationImage(
+        image: NetworkImage(
+            'http://192.168.100.22/latihan_cpns/api/image/${vModel.data[tmpQ].image}.jpg'),
+        fit: BoxFit.scaleDown)),
+    child: Text(
+      'KETERANGAN JAWABAN', textAlign: TextAlign.right,
+      style: TextStyle(
+          shadows: <Shadow>[
+            Shadow(
+              offset: Offset(2.0, 2.0),
+              blurRadius: 3.0,
+              color: Color.fromARGB(200, 0, 0, 0),
+            ),
+            Shadow(
+              offset: Offset(2.0, 2.0),
+              blurRadius: 3.0,
+              color: Color.fromARGB(125, 0, 0, 255),
+            ),
+          ],
+          color: Colors.white,
+          fontSize: 15,
+          fontWeight: FontWeight.w800),
+    ),
+  );
+
+  boxNext() => Container(
+    color: Colors.orange[300],
+    child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            hasTimer
+                ? InkWell(
+                    onTap: () {
+                      setState(() {
+                        checkAnswer();
+                      });
+                    },
+                    child: Center(
+                      child: Wrap(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.blue[700],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              'cek jawaban',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ))
+                : Center(
                     child: Wrap(
                       children: [
                         Container(
                           margin: EdgeInsets.all(10),
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.blue[700],
+                              color: Colors.grey[400],
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
                             'cek jawaban',
@@ -458,45 +510,46 @@ class _SoalPageState extends State<SoalPage> {
                         ),
                       ],
                     ),
-                  ))
-              : Center(
-                  child: Wrap(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Text(
-                          'cek jawaban',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-          !hasTimer
-              ? InkWell(
-                  onTap: () {
-                    isRight = false;
-                    hasTimer = true;
-                    tempAnswer = '';
-                    trueAnswer = '';
-                    getSoal();
-                    cekSoal();
-                  },
-                  child: Center(
+            !hasTimer
+                ? InkWell(
+                    onTap: () {
+                      isRight = false;
+                      hasTimer = true;
+                      tempAnswer = '';
+                      trueAnswer = '';
+                      getSoal();
+                      cekSoal();
+                    },
+                    child: Center(
+                      child: Wrap(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.all(10),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                                color: Colors.blue[700],
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Text(
+                              'Selanjutnya',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : Center(
                     child: Wrap(
                       children: [
                         Container(
                           margin: EdgeInsets.all(10),
                           padding: EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                              color: Colors.blue[700],
+                              color: Colors.grey[400],
                               borderRadius: BorderRadius.circular(10)),
                           child: Text(
                             'Selanjutnya',
@@ -508,30 +561,10 @@ class _SoalPageState extends State<SoalPage> {
                         ),
                       ],
                     ),
-                  ),
-                )
-              : Center(
-                  child: Wrap(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.all(10),
-                        padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                            color: Colors.grey[400],
-                            borderRadius: BorderRadius.circular(10)),
-                        child: Text(
-                          'Selanjutnya',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-        ],
-      );
+                  )
+          ],
+        ),
+  );
 
   boxTimer() => Center(
         child: Container(
@@ -553,17 +586,28 @@ class _SoalPageState extends State<SoalPage> {
         ),
       );
 
-  bodyApp(SoalModel soalModel) => SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            boxScore(),
-            boxSoal(),
-            boxAnswer(),
-            boxNext(),
-          ],
+  bodyApp() => Container(
+    child: Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    boxScore(),
+                    boxSoal(),
+                    boxAnswer(),
+                    hasTimer ? Container():imageAnswer(),
+                  ],
+                ),
+              ),
         ),
-      );
+        Container(
+          child: boxNext(),
+        )
+      ],
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
