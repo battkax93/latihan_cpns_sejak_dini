@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latihan_cpns_sejak_dini/blocs/soal_bloc.dart';
 import 'package:latihan_cpns_sejak_dini/models/soal_model.dart';
 import '../common/countdownTimer.dart';
+import 'package:latihan_cpns_sejak_dini/common/common_key.dart';
 
 class SoalPage extends StatefulWidget {
   final String jenisSoal;
@@ -436,7 +437,7 @@ class _SoalPageState extends State<SoalPage> {
     decoration: BoxDecoration(
         color: Colors.black, borderRadius: BorderRadius.circular(10), image: DecorationImage(
         image: NetworkImage(
-            'http://192.168.100.22/latihan_cpns/api/image/${vModel.data[tmpQ].image}.jpg'),
+            '${common.hostname}/api/image/${vModel.data[tmpQ].image}.jpg'),
         fit: BoxFit.scaleDown)),
     child: Text(
       'KETERANGAN JAWABAN', textAlign: TextAlign.right,

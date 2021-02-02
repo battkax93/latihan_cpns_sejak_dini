@@ -31,7 +31,8 @@ class SoalBloc {
   }
 
   fetchCountSoal(String jenisSoal, BuildContext ctx) async {
-    CountSoal countSoal = await _repository.getCountSoal(jenisSoal);
+    showCommonDialog(ctx, 'loading');
+    CountSoal countSoal = await _repository.getCountSoal(ctx,jenisSoal);
     _soalCounter.sink.add(countSoal);
     Navigator.push(
         ctx,

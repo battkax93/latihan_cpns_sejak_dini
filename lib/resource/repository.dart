@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:flutter/cupertino.dart';
+
 import 'soal_api_provider.dart';
 import '../models/soal_model.dart';
 import '../models/jumlah_soal.dart';
@@ -9,6 +11,6 @@ class Repository {
 
   //get soal from server
   Future<SoalModel> fetchSoal(String jenisSoal)=> soalApiProvider.fetchSoal(jenisSoal);
-  Future<CountSoal> getCountSoal(String jenisSoal)=> soalApiProvider.getCountSoal(jenisSoal);
+  Future<CountSoal> getCountSoal(BuildContext ctx, String jenisSoal)=> soalApiProvider.getCountSoal(ctx,jenisSoal);
   Future<SettingModel> getSetting() => soalApiProvider.getSetting();
 }

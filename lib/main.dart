@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:latihan_cpns_sejak_dini/blocs/soal_bloc.dart';
 import 'package:latihan_cpns_sejak_dini/models/setting_model.dart';
+import 'common/common_key.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,7 +30,7 @@ class _MyAppState extends State<MyApp> {
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(
-                      "http://192.168.100.22/latihan_cpns/asset/background.jpg"),
+                      '${common.hostname}/asset/background.jpg'),
                   fit: BoxFit.cover)),
           child: Scaffold(
             appBar: AppBar(
@@ -75,7 +76,7 @@ class _MyAppState extends State<MyApp> {
                                               Colors.black.withOpacity(0.1),
                                               BlendMode.darken),
                                           image: NetworkImage(
-                                              'http://192.168.100.22/latihan_cpns/asset/tiu-button-bg.jpg'),
+                                              '${common.hostname}/asset/tiu-button-bg.jpg'),
                                           fit: BoxFit.cover)),
                                   child: Center(
                                     child: Column(
@@ -151,7 +152,7 @@ class _MyAppState extends State<MyApp> {
                                             Colors.black.withOpacity(0.05),
                                             BlendMode.darken),
                                         image: NetworkImage(
-                                            'http://192.168.100.22/latihan_cpns/asset/tkp-button-bg.jpg'),
+                                            '${common.hostname}/asset/tkp-button-bg.jpg'),
                                         fit: BoxFit.cover),
                                   ),
                                   child: Center(
@@ -228,7 +229,7 @@ class _MyAppState extends State<MyApp> {
                                               Colors.black.withOpacity(0.02),
                                               BlendMode.darken),
                                           image: NetworkImage(
-                                              'http://192.168.100.22/latihan_cpns/asset/twk-button-bg.jpg'),
+                                              '${common.hostname}/asset/twk-button-bg.jpg'),
                                           fit: BoxFit.cover)),
                                   child: Center(
                                     child: Column(
@@ -300,7 +301,7 @@ class _MyAppState extends State<MyApp> {
                                 ],
                                 image: DecorationImage(
                                     image: NetworkImage(
-                                        'http://192.168.100.22/latihan_cpns/asset/maintenance.jpg'),
+                                        '${common.hostname}asset/maintenance.jpg'),
                                     fit: BoxFit.cover),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Container(
