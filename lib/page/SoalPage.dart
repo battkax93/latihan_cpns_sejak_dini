@@ -124,6 +124,14 @@ class _SoalPageState extends State<SoalPage> {
     }
   }
 
+  bool isTiu(){
+    if(!hasTimer){
+      if(jenisSoal=='TIU'){
+        return true;
+      }
+    }
+  }
+
   streamBuilder(val) {
     return StreamBuilder(
       stream: val,
@@ -143,6 +151,19 @@ class _SoalPageState extends State<SoalPage> {
       },
     );
   }
+
+  upView() => Container(
+    color: Colors.blueAccent,
+    padding: EdgeInsets.only(bottom: 20),
+    margin: EdgeInsets.only(bottom: 20),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        boxScore(),
+        boxSoal()
+      ],
+    ),
+  );
 
   boxScore() => Container(
         padding: EdgeInsets.all(10),
@@ -185,7 +206,7 @@ class _SoalPageState extends State<SoalPage> {
               padding: EdgeInsets.all(10),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.blue[100],
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10)),
               child: Text(
                 '${vModel.data[tmpQ].soal}',
@@ -595,10 +616,9 @@ class _SoalPageState extends State<SoalPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    boxScore(),
-                    boxSoal(),
+                    upView(),
                     boxAnswer(),
-                    hasTimer ? Container():imageAnswer(),
+                    hasTimer || jenisSoal != 'TIU' ? Container()  : imageAnswer() ,
                   ],
                 ),
               ),
@@ -613,12 +633,15 @@ class _SoalPageState extends State<SoalPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LATIHAN CPNS',
+      title: 'LATIHAN CPNS & PPPK',
       home: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
+                colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.5),
+                    BlendMode.darken),
                 image: NetworkImage(
-                    'http://192.168.100.22/latihan_cpns/asset/background.jpg'),
+                    '${CommonKey().hostname}/asset/background.jpg'),
                 fit: BoxFit.cover)),
         child: Scaffold(
             key: _scaffoldKey,

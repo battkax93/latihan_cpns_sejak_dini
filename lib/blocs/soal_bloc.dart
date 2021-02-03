@@ -6,6 +6,7 @@ import '../models/soal_model.dart';
 import '../models/jumlah_soal.dart';
 import '../models/setting_model.dart';
 import '../page/SoalPage.dart';
+import 'package:giffy_dialog/giffy_dialog.dart';
 
 
 class SoalBloc {
@@ -14,6 +15,15 @@ class SoalBloc {
   SoalModel tempSoalModel;
   CountSoal tempCountSoal;
   SettingModel tempSettingModel;
+
+   List<Key> keys = [
+    Key("Network"),
+    Key("NetworkDialog"),
+    Key("Flare"),
+    Key("FlareDialog"),
+    Key("Asset"),
+    Key("AssetDialog")
+  ];
 
   final _repository = Repository();
 
@@ -62,7 +72,27 @@ class SoalBloc {
       transitionDuration: Duration(milliseconds: 400),
       context: ctx,
       pageBuilder: (_, __, ___) {
-        return Center(
+        return /*FlareGiffyDialog(
+          key: keys[3],
+          flarePath: 'assets/space_demo.flr',
+          flareAnimation: 'loading',
+          title: Text(
+            'Space Reloading',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 22.0, fontWeight: FontWeight.w600),
+          ),
+          entryAnimation: EntryAnimation.DEFAULT,
+          description: Text(
+            'This is a space reloading dialog box. This library helps you easily create fancy flare dialog.',
+            textAlign: TextAlign.center,
+            style: TextStyle(),
+          ),
+          onOkButtonPressed: () {},
+        );*/
+
+
+        Center(
           child: Container(
               height: 300,
               width: 300,
@@ -70,13 +100,17 @@ class SoalBloc {
               decoration: BoxDecoration(
                   color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Center(
-                  child: Text(
-                    txt,
-                    style: TextStyle(
-                        fontSize: 30,
-                        color: Colors.blueAccent,
-                        decoration: TextDecoration.none),
-                    textAlign: TextAlign.center,
+                  child: Column(
+                    children: [
+                      Text(
+                        txt,
+                        style: TextStyle(
+                            fontSize: 30,
+                            color: Colors.blueAccent,
+                            decoration: TextDecoration.none),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ))),
         );
       },
