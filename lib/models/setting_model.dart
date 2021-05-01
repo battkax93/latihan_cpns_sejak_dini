@@ -1,8 +1,8 @@
 class SettingModel {
-  String id;
-  String isMaintenance;
-  String isContainAds;
-  String isApproveAdd;
+  int id;
+  int isMaintenance;
+  int isContainAds;
+  int isApproveAdd;
 
   SettingModel(
       {this.id, this.isMaintenance, this.isContainAds, this.isApproveAdd});

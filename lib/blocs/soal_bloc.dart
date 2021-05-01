@@ -30,6 +30,7 @@ class SoalBloc {
   final _settingFetcher = PublishSubject<SettingModel>();
   final _soalFetcher = PublishSubject<SoalModel>();
   final _soalCounter = PublishSubject<CountSoal>();
+
   Observable<SettingModel> get oneSetting => _settingFetcher.stream;
   Observable<SoalModel> get oneSoal => _soalFetcher.stream;
   Observable<CountSoal> get hitungSoal => _soalCounter.stream;
@@ -41,13 +42,17 @@ class SoalBloc {
   }
 
   fetchCountSoal(String jenisSoal, BuildContext ctx) async {
-    showCommonDialog(ctx, 'loading');
-    CountSoal countSoal = await _repository.getCountSoal(ctx,jenisSoal);
-    _soalCounter.sink.add(countSoal);
+    // showCommonDialog(ctx, 'loading');
+    // CountSoal countSoal = await _repository.getCountSoal(ctx,jenisSoal);
+    // _soalCounter.sink.add(countSoal);
+    SoalModel soalModel = await _repository.fetchSoal(jenisSoal);
+    _soalFetcher.sink.add(soalModel);
+    tempSoalModel = soalModel;
+    var jumlahSoal = tempSoalModel.jumlah;
     Navigator.push(
         ctx,
         MaterialPageRoute(
-            builder: (context) => SoalPage(jenisSoal, countSoal.jumlahSoal )));
+            builder: (context) => SoalPage(jenisSoal, jumlahSoal )));
   }
 
   fetchSetting() async {

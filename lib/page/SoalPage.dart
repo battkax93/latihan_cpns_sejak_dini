@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:latihan_cpns_sejak_dini/blocs/soal_bloc.dart';
 import 'package:latihan_cpns_sejak_dini/models/soal_model.dart';
 import '../common/countdownTimer.dart';
-import 'package:latihan_cpns_sejak_dini/common/common_key.dart';
+import '../common/common_key.dart';
 
 class SoalPage extends StatefulWidget {
   final String jenisSoal;
@@ -21,8 +21,13 @@ class _SoalPageState extends State<SoalPage> {
 
   _SoalPageState(this.jenisSoal, this.jumlahSoal);
 
+  var mainUrl = CommonKey().hostname;
+  var mainHomeAsset = CommonKey().imgHomeView;
+  var imgAnswer = CommonKey().imgSoalKey;
+
   bool isRight = false;
   bool hasTimer = true;
+  var judulSoal;
   var tempStatus = '';
   var tempAnswer = '';
   var trueAnswer = '';
@@ -41,6 +46,7 @@ class _SoalPageState extends State<SoalPage> {
     super.initState();
     cekSoal();
     getSoal();
+    checkJenisSoal();
   }
 
   void cekSoal() {
@@ -57,6 +63,14 @@ class _SoalPageState extends State<SoalPage> {
     jumlahSoal==1? tmpQ = 0 : tmpQ = bloc.randomArr(jumlahSoal);
     bloc.fetchSoal(jenisSoal);
     vModel = bloc.tempSoalModel;
+  }
+
+  void checkJenisSoal(){
+    if(jenisSoal=='TIU'||jenisSoal=='TWK'||jenisSoal=='TKP'){
+      judulSoal = 'Latihan CPNS & PPPK';
+    } else {
+      judulSoal = 'Latihan UNBK';
+    }
   }
 
   void lockAnswer(String answer) {
@@ -160,6 +174,7 @@ class _SoalPageState extends State<SoalPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         boxScore(),
+        Center(child: Text(jenisSoal, style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white, fontSize: 20))),
         boxSoal()
       ],
     ),
@@ -223,11 +238,11 @@ class _SoalPageState extends State<SoalPage> {
   boxAnswer() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          trueAnswer == 'a'
+          trueAnswer == 'A'
               ? InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('a');
+                    lockAnswer('A');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -254,7 +269,7 @@ class _SoalPageState extends State<SoalPage> {
               : InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('a');
+                    lockAnswer('A');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -262,7 +277,7 @@ class _SoalPageState extends State<SoalPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color:
-                            tempAnswer == 'a' ? Colors.blue : Colors.yellow[50],
+                            tempAnswer == 'A' ? Colors.blue : Colors.yellow[50],
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,11 +294,11 @@ class _SoalPageState extends State<SoalPage> {
                     ),
                   ),
                 ), //a
-          trueAnswer == 'b'
+          trueAnswer == 'B'
               ? InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('b');
+                    lockAnswer('B');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -310,7 +325,7 @@ class _SoalPageState extends State<SoalPage> {
               : InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('b');
+                    lockAnswer('B');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -318,7 +333,7 @@ class _SoalPageState extends State<SoalPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color:
-                            tempAnswer == 'b' ? Colors.blue : Colors.yellow[50],
+                            tempAnswer == 'B' ? Colors.blue : Colors.yellow[50],
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,11 +350,11 @@ class _SoalPageState extends State<SoalPage> {
                     ),
                   ),
                 ), //b
-          trueAnswer == 'c'
+          trueAnswer == 'C'
               ? InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('c');
+                    lockAnswer('C');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -366,7 +381,7 @@ class _SoalPageState extends State<SoalPage> {
               : InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('c');
+                    lockAnswer('C');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -374,7 +389,7 @@ class _SoalPageState extends State<SoalPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color:
-                            tempAnswer == 'c' ? Colors.blue : Colors.yellow[50],
+                            tempAnswer == 'C' ? Colors.blue : Colors.yellow[50],
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -391,11 +406,11 @@ class _SoalPageState extends State<SoalPage> {
                     ),
                   ),
                 ), //c
-          trueAnswer == 'd'
+          trueAnswer == 'D'
               ? InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('d');
+                    lockAnswer('D');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -422,7 +437,7 @@ class _SoalPageState extends State<SoalPage> {
               : InkWell(
                   splashColor: Colors.green[400],
                   onTap: () {
-                    lockAnswer('d');
+                    lockAnswer('D');
                   },
                   child: Container(
                     margin: EdgeInsets.all(10),
@@ -430,7 +445,7 @@ class _SoalPageState extends State<SoalPage> {
                     width: double.infinity,
                     decoration: BoxDecoration(
                         color:
-                            tempAnswer == 'd' ? Colors.blue : Colors.yellow[50],
+                            tempAnswer == 'D' ? Colors.blue : Colors.yellow[50],
                         borderRadius: BorderRadius.circular(10)),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -456,10 +471,13 @@ class _SoalPageState extends State<SoalPage> {
     padding: EdgeInsets.all(10),
     margin: EdgeInsets.all(10),
     decoration: BoxDecoration(
-        color: Colors.black, borderRadius: BorderRadius.circular(10), image: DecorationImage(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(10),
+        image: DecorationImage(
         image: NetworkImage(
-            '${common.hostname}/api/image/${vModel.data[tmpQ].image}.jpg'),
-        fit: BoxFit.scaleDown)),
+            // '${common.hostname}/api/image/${vModel.data[tmpQ].image}.jpg'),
+            '$mainUrl/$imgAnswer/${vModel.data[tmpQ].image}.jpeg'),
+            fit: BoxFit.scaleDown)),
     child: Text(
       'KETERANGAN JAWABAN', textAlign: TextAlign.right,
       style: TextStyle(
@@ -633,7 +651,7 @@ class _SoalPageState extends State<SoalPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'LATIHAN CPNS & PPPK',
+      title: judulSoal,
       home: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
@@ -641,13 +659,13 @@ class _SoalPageState extends State<SoalPage> {
                     Colors.black.withOpacity(0.5),
                     BlendMode.darken),
                 image: NetworkImage(
-                    '${CommonKey().hostname}/asset/background.jpg'),
+                    '$mainUrl/$mainHomeAsset/background.jpg'),
                 fit: BoxFit.cover)),
         child: Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
               title: Center(
-                child: Text('Latihan CPNS Sejak Dini'),
+                child: Text(judulSoal),
               ),
               backgroundColor: Colors.orange[300],
             ),

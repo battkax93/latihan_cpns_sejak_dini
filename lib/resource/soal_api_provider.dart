@@ -8,13 +8,17 @@ import 'package:flutter/material.dart';
 class SoalApiProvider {
   Client client = Client();
   var endPoint = 'https://latihancpnssejakdini.000webhostapp.com/api';
+  var endPoint2 = 'http://192.168.100.32:8000/api';
   var soalKey = "soal.php";
+  var soalKey2 = "getsoal";
   var countSoalKey = "hitungsoal.php";
   var getSettingKey = "getSetting.php";
+  var getSettingKey2 = "getsetting";
 
   Future<SoalModel> fetchSoal(String jenisSoal) async {
     print('$jenisSoal');
-    String url = '$endPoint/$soalKey?jenis=$jenisSoal';
+    // String url = '$endPoint/$soalKey?jenis=$jenisSoal';
+    String url = '$endPoint2/$soalKey2/$jenisSoal';
     final response = await client.get(url);
     print(url);
     print(response.body);
@@ -39,7 +43,7 @@ class SoalApiProvider {
   }
 
   Future<SettingModel> getSetting() async {
-    String url = '$endPoint/$getSettingKey';
+    String url = '$endPoint2/$getSettingKey2';
     final response = await client.get(url);
     print(url);
     if(response.statusCode==200){

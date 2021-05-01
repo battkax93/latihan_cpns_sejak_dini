@@ -1,13 +1,17 @@
 class SoalModel {
-  int code;
+  String code;
   String message;
+  int jumlah;
+  String jenis;
   List<Data> data;
 
-  SoalModel({this.code, this.message, this.data});
+  SoalModel({this.code, this.message, this.jumlah, this.jenis, this.data});
 
   SoalModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     message = json['message'];
+    jumlah = json['jumlah'];
+    jenis = json['jenis'];
     if (json['data'] != null) {
       data = new List<Data>();
       json['data'].forEach((v) {
@@ -20,6 +24,8 @@ class SoalModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['code'] = this.code;
     data['message'] = this.message;
+    data['jumlah'] = this.jumlah;
+    data['jenis'] = this.jenis;
     if (this.data != null) {
       data['data'] = this.data.map((v) => v.toJson()).toList();
     }
@@ -28,7 +34,7 @@ class SoalModel {
 }
 
 class Data {
-  String id;
+  int id;
   String jenis;
   String soal;
   String a;
@@ -36,10 +42,10 @@ class Data {
   String c;
   String d;
   String jawabanBenar;
-  String isConfirmed;
   String image;
-  String benar;
-  String salah;
+  int isConfirmed;
+  int benar;
+  int salah;
 
   Data(
       {this.id,
@@ -50,8 +56,8 @@ class Data {
         this.c,
         this.d,
         this.jawabanBenar,
-        this.isConfirmed,
         this.image,
+        this.isConfirmed,
         this.benar,
         this.salah});
 
@@ -64,8 +70,8 @@ class Data {
     c = json['c'];
     d = json['d'];
     jawabanBenar = json['jawaban_benar'];
-    isConfirmed = json['is_confirmed'];
     image = json['image'];
+    isConfirmed = json['is_confirmed'];
     benar = json['benar'];
     salah = json['salah'];
   }
@@ -80,8 +86,8 @@ class Data {
     data['c'] = this.c;
     data['d'] = this.d;
     data['jawaban_benar'] = this.jawabanBenar;
-    data['is_confirmed'] = this.isConfirmed;
     data['image'] = this.image;
+    data['is_confirmed'] = this.isConfirmed;
     data['benar'] = this.benar;
     data['salah'] = this.salah;
     return data;
