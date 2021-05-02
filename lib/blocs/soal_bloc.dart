@@ -48,11 +48,10 @@ class SoalBloc {
     SoalModel soalModel = await _repository.fetchSoal(jenisSoal);
     _soalFetcher.sink.add(soalModel);
     tempSoalModel = soalModel;
-    var jumlahSoal = tempSoalModel.jumlah;
     Navigator.push(
         ctx,
         MaterialPageRoute(
-            builder: (context) => SoalPage(jenisSoal, jumlahSoal )));
+            builder: (context) => SoalPage(jenisSoal)));
   }
 
   fetchSetting() async {

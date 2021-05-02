@@ -6,20 +6,18 @@ import '../common/common_key.dart';
 
 class SoalPage extends StatefulWidget {
   final String jenisSoal;
-  final int jumlahSoal;
 
-  SoalPage(this.jenisSoal, this.jumlahSoal);
+  SoalPage(this.jenisSoal);
 
   @override
   _SoalPageState createState() =>
-      _SoalPageState(this.jenisSoal, this.jumlahSoal);
+      _SoalPageState(this.jenisSoal);
 }
 
 class _SoalPageState extends State<SoalPage> {
   String jenisSoal;
-  int jumlahSoal;
 
-  _SoalPageState(this.jenisSoal, this.jumlahSoal);
+  _SoalPageState(this.jenisSoal);
 
   var mainUrl = CommonKey().hostname;
   var mainHomeAsset = CommonKey().imgHomeView;
@@ -28,6 +26,7 @@ class _SoalPageState extends State<SoalPage> {
   bool isRight = false;
   bool hasTimer = true;
   var judulSoal;
+  var jumlahsoal = 0;
   var tempStatus = '';
   var tempAnswer = '';
   var trueAnswer = '';
@@ -44,6 +43,7 @@ class _SoalPageState extends State<SoalPage> {
   @override
   void initState() {
     super.initState();
+    bloc.fetchSoal(jenisSoal);
     cekSoal();
     getSoal();
     checkJenisSoal();
@@ -59,14 +59,14 @@ class _SoalPageState extends State<SoalPage> {
     });
   }
 
-  void getSoal() {
-    jumlahSoal==1? tmpQ = 0 : tmpQ = bloc.randomArr(jumlahSoal);
-    bloc.fetchSoal(jenisSoal);
-    vModel = bloc.tempSoalModel;
+  void getSoal() async {
+    vModel = await bloc.tempSoalModel;
+    jumlahsoal = bloc.tempSoalModel.jumlah;
+    jumlahsoal <= 3 ? tmpQ = 0 : tmpQ = bloc.randomArr(jumlahsoal);
   }
 
-  void checkJenisSoal(){
-    if(jenisSoal=='TIU'||jenisSoal=='TWK'||jenisSoal=='TKP'){
+  void checkJenisSoal() {
+    if (jenisSoal == 'TIU' || jenisSoal == 'TWK' || jenisSoal == 'TKP') {
       judulSoal = 'Latihan CPNS & PPPK';
     } else {
       judulSoal = 'Latihan UNBK';
@@ -126,7 +126,8 @@ class _SoalPageState extends State<SoalPage> {
                       color: Colors.white,
                       fontSize: fz2,
                       fontWeight: FontWeight.w700))
-              : new Text("Anda Salah | Jawaban: ${vModel.data[tmpQ].jawabanBenar}",
+              : new Text(
+                  "Anda Salah | Jawaban: ${vModel.data[tmpQ].jawabanBenar}",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: fz2,
@@ -138,9 +139,9 @@ class _SoalPageState extends State<SoalPage> {
     }
   }
 
-  bool isTiu(){
-    if(!hasTimer){
-      if(jenisSoal=='TIU'){
+  bool isTiu() {
+    if (!hasTimer) {
+      if (jenisSoal == 'TIU') {
         return true;
       }
     }
@@ -167,18 +168,23 @@ class _SoalPageState extends State<SoalPage> {
   }
 
   upView() => Container(
-    color: Colors.blueAccent,
-    padding: EdgeInsets.only(bottom: 20),
-    margin: EdgeInsets.only(bottom: 20),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        boxScore(),
-        Center(child: Text(jenisSoal, style: TextStyle(fontWeight: FontWeight.w800, color: Colors.white, fontSize: 20))),
-        boxSoal()
-      ],
-    ),
-  );
+        color: Colors.blueAccent,
+        padding: EdgeInsets.only(bottom: 20),
+        margin: EdgeInsets.only(bottom: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            boxScore(),
+            Center(
+                child: Text(jenisSoal,
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        fontSize: 20))),
+            boxSoal()
+          ],
+        ),
+      );
 
   boxScore() => Container(
         padding: EdgeInsets.all(10),
@@ -221,8 +227,7 @@ class _SoalPageState extends State<SoalPage> {
               padding: EdgeInsets.all(10),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10)),
+                  color: Colors.white, borderRadius: BorderRadius.circular(10)),
               child: Text(
                 '${vModel.data[tmpQ].soal}',
                 style: TextStyle(
@@ -466,22 +471,22 @@ class _SoalPageState extends State<SoalPage> {
       );
 
   imageAnswer() => Container(
-    height: 500,
-    width: double.infinity,
-    padding: EdgeInsets.all(10),
-    margin: EdgeInsets.all(10),
-    decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(10),
-        image: DecorationImage(
-        image: NetworkImage(
-            // '${common.hostname}/api/image/${vModel.data[tmpQ].image}.jpg'),
-            '$mainUrl/$imgAnswer/${vModel.data[tmpQ].image}.jpeg'),
-            fit: BoxFit.scaleDown)),
-    child: Text(
-      'KETERANGAN JAWABAN', textAlign: TextAlign.right,
-      style: TextStyle(
-          shadows: <Shadow>[
+        height: 500,
+        width: double.infinity,
+        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(10),
+            image: DecorationImage(
+                image: NetworkImage(
+                    // '${common.hostname}/api/image/${vModel.data[tmpQ].image}.jpg'),
+                    '$mainUrl/$imgAnswer/${vModel.data[tmpQ].image}.jpeg'),
+                fit: BoxFit.scaleDown)),
+        child: Text(
+          'KETERANGAN JAWABAN',
+          textAlign: TextAlign.right,
+          style: TextStyle(shadows: <Shadow>[
             Shadow(
               offset: Offset(2.0, 2.0),
               blurRadius: 3.0,
@@ -492,16 +497,13 @@ class _SoalPageState extends State<SoalPage> {
               blurRadius: 3.0,
               color: Color.fromARGB(125, 0, 0, 255),
             ),
-          ],
-          color: Colors.white,
-          fontSize: 15,
-          fontWeight: FontWeight.w800),
-    ),
-  );
+          ], color: Colors.white, fontSize: 15, fontWeight: FontWeight.w800),
+        ),
+      );
 
   boxNext() => Container(
-    color: Colors.orange[300],
-    child: Row(
+        color: Colors.orange[300],
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             hasTimer
@@ -604,7 +606,7 @@ class _SoalPageState extends State<SoalPage> {
                   )
           ],
         ),
-  );
+      );
 
   boxTimer() => Center(
         child: Container(
@@ -627,26 +629,28 @@ class _SoalPageState extends State<SoalPage> {
       );
 
   bodyApp() => Container(
-    child: Column(
-      children: [
-        Expanded(
-          child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     upView(),
                     boxAnswer(),
-                    hasTimer || jenisSoal != 'TIU' ? Container()  : imageAnswer() ,
+                    hasTimer || jenisSoal != 'TIU'
+                        ? Container()
+                        : imageAnswer(),
                   ],
                 ),
               ),
+            ),
+            Container(
+              child: boxNext(),
+            )
+          ],
         ),
-        Container(
-          child: boxNext(),
-        )
-      ],
-    ),
-  );
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -656,10 +660,8 @@ class _SoalPageState extends State<SoalPage> {
         decoration: BoxDecoration(
             image: DecorationImage(
                 colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.5),
-                    BlendMode.darken),
-                image: NetworkImage(
-                    '$mainUrl/$mainHomeAsset/background.jpg'),
+                    Colors.black.withOpacity(0.5), BlendMode.darken),
+                image: NetworkImage('$mainUrl/$mainHomeAsset/background.jpg'),
                 fit: BoxFit.cover)),
         child: Scaffold(
             key: _scaffoldKey,
